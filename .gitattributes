@@ -1,0 +1,2 @@
+*.svg filter=lfs diff=lfs merge=lfs -text
+*nodemodules filter=lfs diff=lfs merge=lfs -text
