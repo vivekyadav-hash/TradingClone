@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios, { all } from "axios";
+// import { VerticalGraph } from "./VerticalGraph";
 
-import { positions } from "../data/data";
+
+// import { positions } from "../data/data";
+
 
 const Positions = () => {
+  const [addPosition, setAddPosition] = useState([]);
+
+  useEffect(() => {
+    axios.get("http://localhost:3002/addPosition").then((res) => {
+      // console.log(res.data);
+      setAddPosition(res.data);
+    });
+  }, []);
+
   return (
     <>
-      <h3 className="title">Positions ({positions.length})</h3>
+      <h3 className="title">Positions ({addPosition.length})</h3>
 
       <div className="order-table">
         <table>
@@ -19,7 +32,7 @@ const Positions = () => {
             <th>Chg.</th>
           </tr>
 
-          {positions.map((stock, index) => {
+          {addPosition.map((stock, index) => {
             const curValue = stock.price * stock.qty;
             const isProfit = curValue - stock.avg * stock.qty >= 0.0;
             const profClass = isProfit ? "profit" : "loss";
