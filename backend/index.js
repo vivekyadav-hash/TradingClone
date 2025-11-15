@@ -1,20 +1,38 @@
 require("dotenv").config();
 
 const express = require("express");
+const authRoutes = require("./routes/authRoutes");
+
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const cors = require("cors");
+
 
 const { HoldingModels } = require("./model/HoldingModels");
 const {PositionModels} = require("./model/PositionModels");
+const {OrderModels} = require ("./model/OrderModels");
+const {UsersModels} = require("./model/UsersModels");
 
 const PORT = process.env.PORT || 3002;
 const url = process.env.MONGO_URL;
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "http://localhost:3001"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
+
 app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(express.json());
+app.use("/", authRoutes);
+console.log("Auth routes mounted");
+
 
 
 // app.get("/addHolding", async (req, res) => {
@@ -186,6 +204,8 @@ app.use(bodyParser.json());
 // res.send("done");
 // })
 
+
+
 app.get('/allHolding' , async(req, res) =>{
   let allHolding = await HoldingModels.find({});
   res.json(allHolding);
@@ -196,6 +216,16 @@ app.get('/addPosition' , async(req, res) =>{
   res.json(addPosition);
 })
 
+app.post('/newOrder', async(req,res) =>{
+let newOrder = new OrderModels({
+name:req.body.name,
+qty:req.body.qty,
+price:req.body.price,
+mode:req.body.mode,
+});
+newOrder.save();
+res.send("Order saved");
+})
 app.listen(PORT, () => {
   console.log("App started");
   mongoose.connect(url);

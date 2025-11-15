@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 
-import axios from "axios";
+// import axios from "axios";
 
 import GeneralContext from "./GeneralContext";
 
@@ -136,6 +136,7 @@ const WatchListActions = ({ uid }) => {
     generalContext.openBuyWindow(uid);
   };
 
+
   return (
     <span className="actions">
       <span>
@@ -153,6 +154,7 @@ const WatchListActions = ({ uid }) => {
           placement="top"
           arrow
           TransitionComponent={Grow}
+         
         >
           <button className="sell">Sell</button>
         </Tooltip>

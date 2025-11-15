@@ -1,6 +1,6 @@
-const{Schema, STATES} = require("mongoose");
+const{Schema} = require("mongoose");
 
-const {OrderSchema} = new Schema({
+const OrderSchema = new Schema({
 name:String,
 qty:Number,
 price:Number,
