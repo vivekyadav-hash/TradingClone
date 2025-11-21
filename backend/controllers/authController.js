@@ -6,11 +6,21 @@ const bcrypt = require("bcrypt");
 module.exports.Signup = async (req, res, next) => {
   try {
     const { email, password, username, createdAt } = req.body;
+     
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.json({ message: "User already exists" });
     }
-    const user = await User.create({ email, password, username, createdAt });
+    // const user = await User.create({ email, password, username, createdAt });
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+const user = await User.create({
+  email,
+  password: hashedPassword,
+  username,
+  createdAt,
+});
+
     const token = createSecretToken(user._id);
     res.cookie("token", token, {
       withCredentials: true,
@@ -27,7 +37,9 @@ module.exports.Signup = async (req, res, next) => {
 
 module.exports.Login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    let { email, password } = req.body;
+   email = email.trim();
+
     if(!email || !password ){
       return res.json({message:'All fields are required'})
     }
