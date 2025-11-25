@@ -137,6 +137,7 @@ const WatchListActions = ({ uid }) => {
   };
 
 
+
   return (
     <span className="actions">
       <span>
@@ -154,7 +155,7 @@ const WatchListActions = ({ uid }) => {
           placement="top"
           arrow
           TransitionComponent={Grow}
-         
+          onClick={() => generalContext.openSellWindow(uid)}        
         >
           <button className="sell">Sell</button>
         </Tooltip>
