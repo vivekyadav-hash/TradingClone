@@ -3,6 +3,7 @@ const User = require("../model/UsersModels");
 const { createSecretToken } = require("../util/SecretToken");
 const bcrypt = require("bcrypt");
 
+
 module.exports.Signup = async (req, res, next) => {
   try {
     const { email, password, username, createdAt } = req.body;
@@ -11,25 +12,17 @@ module.exports.Signup = async (req, res, next) => {
     if (existingUser) {
       return res.json({ message: "User already exists" });
     }
-    // const user = await User.create({ email, password, username, createdAt });
-    const hashedPassword = await bcrypt.hash(password, 10);
 
-const user = await User.create({
-  email,
-  password: hashedPassword,
-  username,
-  createdAt,
-});
+    // ✅ Bas yahi rakhna hai, model hook khud hash karega
+    const user = await User.create({ email, password, username, createdAt });
 
     const token = createSecretToken(user._id);
     res.cookie("token", token, {
       withCredentials: true,
       httpOnly: false,
     });
-    res
-      .status(201)
-      .json({ message: "User signed in successfully", success: true, user });
-    next();
+    res.status(201).json({ message: "User signed in successfully", success: true, user });
+
   } catch (error) {
     console.error(error);
   }
@@ -57,8 +50,8 @@ module.exports.Login = async (req, res, next) => {
        httpOnly: false,
      });
      res.status(201).json({ message: "User logged in successfully", success: true });
-     next()
+    //  next()
   } catch (error) {
     console.error(error);
   }
-}
+};

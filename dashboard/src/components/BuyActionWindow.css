@@ -177,10 +177,15 @@
     color: #666666;
   }
   
+   .btn-red{
+    background:rgb(241, 40, 40)
+  }
+
   .btn-blue {
     background: #4184f3;
   }
   
+ 
   /* sudo selectors */
   .tab button::after {
     content: "";
@@ -210,6 +215,9 @@
     background-color: transparent;
   }
   
+  .btn-red:hover {
+    background: #e7492a;
+  }
   .btn-blue:hover {
     background: #74a7fa;
   }
